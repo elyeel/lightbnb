@@ -129,11 +129,67 @@ exports.getAllReservations = getAllReservations;
  */
 const getAllProperties = function(options, limit = 10) {
   // const limitedProperties = {};
-  return pool.query(`
-    SELECT * FROM properties
-    LIMIT $1;
-  `, [limit])
+  const queryParams = [];
+  let counter = 0;
+  let queryString = `
+  SELECT properties.*,
+    avg(property_reviews.rating) as average_rating
+  FROM properties
+  JOIN property_reviews ON properties.id = property_reviews.property_id  `;
+
+  if (options.owner_id) {
+    counter++;
+  }
+  if (options.minimum_price_per_night && options.maximum_price_per_night) {
+    counter++;
+  }
+  if 
+  switch case
+
+  if (options.owner_id) {
+    queryParams.push(`${options.owner_id}`);
+    queryString += `WHERE owner_id = $${queryParams.length}`;
+  }
+
+  if (options.city) {
+    queryParams.push(`%${options.city}%`);
+    queryString += `WHERE city ILIKE $${queryParams.length}`;
+  }
+  
+  queryParams.push(limit);
+  queryString += `
+  GROUP BY properties.id
+  ORDER BY cost_per_night
+  LIMIT $${queryParams.length};
+  `;
+
+  // 5
+  console.log(queryString, queryParams);
+
+  // 6
+  return pool.query(queryString, queryParams)
   .then(res => res.rows);
+
+
+  // original code
+  // return pool.query(`
+  // SELECT properties.id as id, 
+  //   title,
+  //   cost_per_night*100 as cost_per_night,
+  //   avg(property_reviews.rating) as average_rating,
+  //   thumbnail_photo_url
+  // FROM properties
+  // JOIN property_reviews ON properties.id = property_id
+  // WHERE city LIKE $1 OR
+  //   cost_per_night > $2 OR
+  //   cost_per_night < $3
+  // GROUP BY properties.id
+  // HAVING avg(property_reviews.rating) >= 3
+  // ORDER BY cost_per_night
+  // LIMIT $5;
+  // `, [options.city, options.minimum_price_per_night, 100*options.maximum_price_per_night, options.minimum_rating, limit])
+  // .then(res => res.rows)
+  // .catch(err => console.error('query error', err.stack));
   // .catch(err => console.error('query error', err.stack));
   // return Promise.resolve(limitedProperties);
 }
