@@ -1,15 +1,6 @@
-const properties = require("./json/properties.json");
-const users = require("./json/users.json");
+// const properties = require("./json/properties.json");
+// const users = require("./json/users.json");
 const db = require("../db");
-
-// const { Pool } = require('pg');
-
-// const pool = new Pool({
-//   user: 'vagrant',
-//   password: '123',
-//   host: 'localhost',
-//   database: 'lightbnb'
-// });
 
 /// Users
 
@@ -81,10 +72,6 @@ const addUser = function(user) {
     )
     .then(res => res.rows)
     .catch(err => console.error("query error", err.stack));
-  // const userId = Object.keys(users).length + 1;
-  // user.id = userId;
-  // users[userId] = user;
-  // return Promise.resolve(user);
 };
 exports.addUser = addUser;
 
@@ -232,10 +219,5 @@ const addProperty = function(property) {
   ];
 
   return db.query(queryString, values).then(res => res.rows[0]);
-
-  // const propertyId = Object.keys(properties).length + 1;
-  // property.id = propertyId;
-  // properties[propertyId] = property;
-  // return Promise.resolve(property);
 };
 exports.addProperty = addProperty;
