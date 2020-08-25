@@ -7,7 +7,7 @@ $(() => {
         <input type="email" name="email" placeholder="Email">
       </div>
       <div class="login-form__field-wrapper">
-        <input type="text" name="id" placeholder="User ID">
+        <input type="text" name="name" placeholder="User Name">
       </div>
       <div class="login-form__field-wrapper">
           <input type="password" name="password" placeholder="Password">

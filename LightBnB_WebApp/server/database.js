@@ -43,7 +43,7 @@ const getUserWithId = function (id) {
     .query(
       `
     SELECT * FROM users
-    WHERE id = $1;
+    WHERE name = $1;
   `,
       [id],
       res => {
